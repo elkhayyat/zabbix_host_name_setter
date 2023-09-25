@@ -12,12 +12,12 @@ class ZabbixHostNameSetter:
 
     def get_hosts(self):
         self.connection.connect()
-        self.connection.cursor.execute("SELECT hostid, host FROM hosts")
+        self.connection.cursor.execute("SELECT hostid, name FROM hosts")
         return self.connection.cursor.fetchall()
 
     def get_host_by_host_id(self, host_id):
         self.connection.connect()
-        self.connection.cursor.execute("SELECT hostid, host FROM hosts WHERE hostid = %s" % host_id)
+        self.connection.cursor.execute("SELECT hostid, name FROM hosts WHERE hostid = %s" % host_id)
         return self.connection.cursor.fetchone()
 
     def get_host_system_name_item_id(self, host_id):
