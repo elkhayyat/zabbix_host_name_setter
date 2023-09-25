@@ -7,10 +7,9 @@ load_dotenv()
 
 
 class PostgresConnection:
-    def __init__(self, use_ssh_tunnel=False):
+    def __init__(self):
         self.connection = None
         self.cursor = None
-        self.use_ssh_tunnel = use_ssh_tunnel
 
     def connect(self):
         self.connection = psycopg2.connect(
