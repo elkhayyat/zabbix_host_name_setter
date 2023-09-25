@@ -1,5 +1,3 @@
-import os
-
 from dotenv import load_dotenv
 
 from postgres import PostgresConnection
@@ -9,22 +7,9 @@ load_dotenv()
 
 
 class Main:
-    def __init__(self):
-        self.zabbix_host_name_setter = None
-
     @staticmethod
-    def get_postgres_connection():
-        db_host = os.getenv('DB_HOST')
-        db_name = os.getenv('DB_NAME')
-        db_user = os.getenv('DB_USER')
-        db_password = os.getenv('DB_PASSWORD')
-        db_port = os.getenv('DB_PORT')
-        postgres_connection = PostgresConnection(db_host=db_host, db_name=db_name, db_user=db_user,
-                                                 db_password=db_password, db_port=db_port)
-        return postgres_connection
-
-    def main(self):
-        connection = self.get_postgres_connection()
+    def main():
+        connection = PostgresConnection()
         zabbix_host_name_setter = ZabbixHostNameSetter(connection=connection)
         print("=" * 100)
         print("Starting zabbix host name setter")
