@@ -7,17 +7,17 @@ load_dotenv()
 
 
 class SSHConnection:
-    def __init__(self, host, port, username, password):
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
+    def __init__(self):
+        self.host = os.getenv('SSH_HOST')
+        self.port = int(os.getenv('SSH_PORT'))
+        self.username = os.getenv('SSH_USER')
+        self.password = os.getenv('SSH_PASS')
         self.client = None
 
     def connect(self):
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.client.connect(self.host, self.port, self.username, self.password)
+        self.client.connect(hostname=self.host, port=self.port, username=self.username, password=self.password)
 
     def execute_command(self, command):
         stdin, stdout, stderr = self.client.exec_command(command)
@@ -25,14 +25,3 @@ class SSHConnection:
 
     def close(self):
         self.client.close()
-
-
-host = os.getenv('SSH_HOST')
-port = os.getenv('SSH_PORT')
-username = os.getenv('SSH_USER')
-password = os.getenv('SSH_PASS')
-path = os.getenv('REMOTE_PATH')
-
-ssh_connection = SSHConnection(host=host, port=port, username=username, password=password)
-ssh_connection.connect()
-stdin, stdout, stderr = ssh_connection.execute_command(f'python3 {path}')
