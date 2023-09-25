@@ -43,15 +43,7 @@ class ZabbixHostNameSetter:
             host_id = host[0]
             self.run_for_certain_host_id(host_id)
         self.summary_counter["total"] = self.count
-        print("=" * 100)
-        print("Done")
-        print("=" * 100)
-        print(f"Total hosts: {self.summary_counter.get('total')}")
-        print(f"Changed hosts: {self.summary_counter.get('changed')}")
-        print(f"Already has system name hosts: {self.summary_counter.get('already_has_system_name')}")
-        print(f"Has no system name hosts: {self.summary_counter.get('has_no_system_name')}")
-        print(f"Has no system name item hosts: {self.summary_counter.get('has_no_system_name_item')}")
-        print("=" * 100)
+        self.print_summary_report()
 
     def run_for_certain_host_id(self, host_id):
         host = self.get_host_by_host_id(host_id)
@@ -64,14 +56,25 @@ class ZabbixHostNameSetter:
                 host_system_name = host_system_name[0]
                 if host_system_name != host_name:
                     self.set_host_name_to_host_system_name(host_id, host_system_name)
-                    self.progress_counter["changed"] += 1
+                    self.summary_counter["changed"] += 1
                     print(f"{self.count}. Host {host_name} name changed to {host_system_name}")
                 else:
-                    self.progress_counter["already_has_system_name"] += 1
+                    self.summary_counter["already_has_system_name"] += 1
                     print(f"{self.count}. Host {host_name} name is already {host_system_name}")
             else:
-                self.progress_counter["has_no_system_name"] += 1
+                self.summary_counter["has_no_system_name"] += 1
                 print(f"{self.count}. Host {host_name} has no system name")
         else:
-            self.progress_counter["has_no_system_name_item"] += 1
+            self.summary_counter["has_no_system_name_item"] += 1
             print(f"{self.count}. Host {host_name} has no system name item")
+
+    def print_summary_report(self):
+        print("=" * 100)
+        print("Done")
+        print("=" * 100)
+        print(f"Total hosts: {self.summary_counter.get('total')}")
+        print(f"Changed hosts: {self.summary_counter.get('changed')}")
+        print(f"Already has system name hosts: {self.summary_counter.get('already_has_system_name')}")
+        print(f"Has no system name hosts: {self.summary_counter.get('has_no_system_name')}")
+        print(f"Has no system name item hosts: {self.summary_counter.get('has_no_system_name_item')}")
+        print("=" * 100)
