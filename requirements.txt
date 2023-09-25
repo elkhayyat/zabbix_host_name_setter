@@ -1,3 +1,2 @@
 python-dotenv # for .env file
 psycopg2-binary # for postgresql
-paramiko     # for ssh
